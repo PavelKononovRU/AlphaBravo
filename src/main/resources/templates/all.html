@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>USERS INFO</title>
+    <style>table th, table td {
+        padding: 8px;
+    }</style>
+</head>
+<body>
+<h2>Users page</h2>
+
+<table>
+
+    <tr style="text-align: center">
+        <th>ID пользователя</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Age</th>
+    </tr>
+
+    <tbody>
+    <tr th:each="user, iterStat : ${users}" style="text-align: center">
+
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getName()}"></td>
+        <td th:text="${user.getSurname()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+        <td th:text="${user.getAge()}"></td>
+
+        <!--Кнопка Информации-->
+        <td>
+            <form th:action="@{/users/{id}(id=${user.getId()})}">
+                <button> INFO </button>
+            </form>
+        </td>
+
+        <!--Кнопка Удаления пользователя-->
+        <td>
+            <form th:action="@{/users/{id}(id=${user.getId()})}" th:method="DELETE">
+                <input type="submit" value="DELETE"/>
+            </form>
+        </td>
+
+        <!--Кнопка Обновления Информации-->
+        <td>
+            <form th:action="@{/users/{id}/edit(id=${user.getId()})}">
+                <button> UPDATE USER </button>
+            </form>
+        </td>
+
+
+    </tbody>
+
+</table>
+
+<br/>
+<hr/>
+
+<a href="/users/new">Create New User</a>
+
+</body>
+</html>
