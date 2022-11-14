@@ -1,11 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.UserDAO;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -13,55 +12,43 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
 
-    final UserDAO userDAO;
+    final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
     @Transactional
     @Override
-    public List<User> findAll() {
-        return userDAO.findAll();
+    public List<User> getUsers() {
+        return (List<User>) userRepository.findAll();
     }
+    @Transactional
     @Override
-    public List<User> findById(int id) {
-        return userDAO.findById((long) id).stream().toList();
-    }
-
-    @Override
-    public void delete(int id) {
-
+    public User userInfo(int id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void update(int id, User user) {
-
+    @Transactional
+    public void remove(int id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        userRepository.delete(user);
     }
-
+    @Transactional
     @Override
-    public void save(User user) {
-
+    public void refresh(int id, User user) {
+        User userForUpdate = userInfo(id);
+        userForUpdate.setName(user.getName());
+        userForUpdate.setSurname(user.getSurname());
+        userForUpdate.setEmail(user.getEmail());
+        userForUpdate.setAge(user.getAge());
+        userRepository.save(userForUpdate);
+    }
+    @Transactional
+    @Override
+    public void persist(User user) {
+        userRepository.save(user);
     }
 }
-/*
-    @Override
-    public User findById(int id) {
-        return userDaoImpl.findById(id);
-    }
-
-    @Override
-    public void delete(int id) {
-        userDaoImpl.delete(id);
-    }
-
-    @Override
-    public void update(int id, User user) {
-        userDaoImpl.update(id, user);
-    }
-
-    @Override
-    public void save(User user) {
-        userDaoImpl.save(user);
-    }
-}*/

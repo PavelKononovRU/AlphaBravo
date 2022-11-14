@@ -1,18 +1,20 @@
 package com.example.demo.service;
 
 import com.example.demo.model.User;
+import javassist.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
-    List<User> findAll();
+    List<User> getUsers();
 
-    List<User> findById(int id);
+    User userInfo(int id);
 
-    void delete(int id);
+    void remove(int id);
 
-    void update(int id, User user);
+    void refresh(int id, User user) throws NotFoundException;
 
-    void save(User user);
+    void persist(User user);
 }
