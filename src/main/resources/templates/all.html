@@ -21,7 +21,7 @@
     </tr>
 
     <tbody>
-    <tr th:each="user, iterStat : ${users}" style="text-align: center">
+    <tr th:each="user, iterStat : ${allusers}" style="text-align: center">
 
         <td th:text="${user.getId()}"></td>
         <td th:text="${user.getName()}"></td>

@@ -21,7 +21,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public List<User> getUsers() {
-        return (List<User>) userRepository.findAll();
+        List<User> listusers;
+        listusers = (List<User>) userRepository.findAll();
+        return listusers;
     }
     @Transactional
     @Override
@@ -32,14 +34,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void remove(int id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        userRepository.delete(user);
+        userRepository.deleteById(id);
     }
     @Transactional
     @Override
     public void refresh(int id, User user) {
         User userForUpdate = userInfo(id);
+        userForUpdate.setId((int) user.getId());
         userForUpdate.setName(user.getName());
         userForUpdate.setSurname(user.getSurname());
         userForUpdate.setEmail(user.getEmail());

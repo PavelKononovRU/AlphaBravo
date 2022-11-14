@@ -1,20 +1,23 @@
 package com.example.demo.service;
 
 import com.example.demo.model.User;
-import javassist.NotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-
+    @Transactional
     List<User> getUsers();
 
+    @Transactional
     User userInfo(int id);
 
+    @Transactional
     void remove(int id);
 
-    void refresh(int id, User user) throws NotFoundException;
+    @Transactional
+    void refresh(int id, User user);
 
+    @Transactional
     void persist(User user);
 }

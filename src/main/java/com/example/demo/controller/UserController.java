@@ -22,7 +22,7 @@ public class UserController {
     //Получение всех пользователей
     @GetMapping()
     public String getAllUsers(Model model) {
-        model.addAttribute("users", userServiceImpl.getUsers());
+        model.addAttribute("allusers", userServiceImpl.getUsers());
         return "all";
     }
 
@@ -39,7 +39,6 @@ public class UserController {
         userServiceImpl.save(user);
         return "redirect:/users";
     }
-
     @PatchMapping("/{id}")
     public String update(@ModelAttribute User user, @PathVariable int id) {
         userServiceImpl.refresh(id, new User());
@@ -63,11 +62,8 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public String updateUser(@ModelAttribute("editUser") @Valid User toUpdateUser,BindingResult bindingResult,
+    public String updateUser(@ModelAttribute("editUser") User toUpdateUser,
                              @PathVariable("id") int id) {
-        if (bindingResult.hasErrors()) {
-            return "edit";
-        }
         userServiceImpl.refresh(id, toUpdateUser);
         return "redirect:/users";
     }
@@ -84,11 +80,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public String saveUser(@ModelAttribute("newUser") @Valid User user,
-                           BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "create";
-        }
+    public String saveUser(@ModelAttribute("newUser") User user) {
         userServiceImpl.persist(user);
         return "redirect:/users";
     }
