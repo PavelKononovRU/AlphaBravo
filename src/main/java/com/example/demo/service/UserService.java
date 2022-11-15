@@ -10,13 +10,13 @@ public interface UserService {
     List<User> getUsers();
 
     @Transactional
-    User userInfo(int id);
+    User userInfo(long id);
+
+
+    void remove(long id);
 
     @Transactional
-    void remove(int id);
-
-    @Transactional
-    void refresh(int id, User user);
+    void refresh(long id, User user);
 
     @Transactional
     void persist(User user);

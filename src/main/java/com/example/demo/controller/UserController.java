@@ -5,10 +5,7 @@ import com.example.demo.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
@@ -27,43 +24,26 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String getUser(@PathVariable int id, Model model) {
+    public String getUser(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userServiceImpl.userInfo(id));
         return "USER";
     }
 
-
-
-/*    @PutMapping("/{id}")
-    public String create(@ModelAttribute User user) {
-        userServiceImpl.save(user);
-        return "redirect:/users";
-    }
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute User user, @PathVariable int id) {
-        userServiceImpl.refresh(id, new User());
-        return "redirect:/users";
-    }*/
-
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable("id") long id) {
         userServiceImpl.remove(id);
         return "redirect:/users";
     }
 
-
-
-
-
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable int id) {
+    public String edit(Model model, @PathVariable long id) {
         model.addAttribute("editUser", userServiceImpl.userInfo(id));
         return "edit";
     }
 
     @PostMapping("/{id}")
     public String updateUser(@ModelAttribute("editUser") User toUpdateUser,
-                             @PathVariable("id") int id) {
+                             @PathVariable("id") long id) {
         userServiceImpl.refresh(id, toUpdateUser);
         return "redirect:/users";
     }
